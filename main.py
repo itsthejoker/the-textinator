@@ -35,7 +35,7 @@ def send_text(acr_info):
 
 def generate_acronym():
     # randomly generated acronyms, hell yeah
-    length = random.choice([2, 3, 4])
+    length = random.choice([2, 3, 4, 5])
     new_acronym = []
     for _ in range(length):
         new_acronym.append(random.choice(ascii_uppercase))
