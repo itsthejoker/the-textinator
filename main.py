@@ -1,13 +1,16 @@
 import random
-from scapy.all import sniff, ARP
+import time
 from string import ascii_uppercase
+
 import requests
+from scapy.all import sniff, ARP
 from twilio.rest import Client
+
+from keys import DASH_BUTTON_MAC
+from keys import JAKES_PHONE_NUMBER
+from keys import MY_PHONE_NUMBER
 from keys import TWILIO_ACCOUNT_SID
 from keys import TWILIO_AUTH_TOKEN
-from keys import MY_PHONE_NUMBER
-from keys import JAKES_PHONE_NUMBER
-from keys import DASH_BUTTON_MAC
 
 url = 'http://www.nactem.ac.uk/software/acromine/dictionary.py'
 
@@ -68,6 +71,8 @@ def process_acronym():
             parsed_result = parse_acr_definitions(result)
             send_text(parsed_result)
             return
+        else:
+            time.sleep(1)
 
 
 def arp_capture(pkt):
@@ -75,4 +80,6 @@ def arp_capture(pkt):
         process_acronym()
 
 if __name__ == '__main__':
+    # monitor the network until we see the Dash button get pressed, then fire
+    # arp_capture, which triggers the acronym generation and text
     print(sniff(prn=arp_capture, filter="arp", store=0, count=0))
