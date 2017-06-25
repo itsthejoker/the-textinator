@@ -17,20 +17,7 @@ url = 'http://www.nactem.ac.uk/software/acromine/dictionary.py'
 the_textinator = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 
-def convert_keys_to_string(dictionary):
-    """
-    Recursively converts dictionary keys to strings.
-    Shamelessly borrowed from Stack Overflow.
-    """
-    if not isinstance(dictionary, dict):
-        return dictionary
-    return dict(
-        (str(k), convert_keys_to_string(v)) for k, v in dictionary.items()
-    )
-
-
 def send_text(acr_info):
-    acr_info = convert_keys_to_string(acr_info)
     message = (
         'ACRONYM FACTS: Did you know that '
         '"{}" most commonly means "{}" '
@@ -41,12 +28,18 @@ def send_text(acr_info):
         )
     )
 
-    print(message)
-    the_textinator.messages.create(
-        to=JAKES_PHONE_NUMBER,
-        from_=MY_PHONE_NUMBER,
-        body=message
-    )
+    try:
+        the_textinator.messages.create(
+            to=JAKES_PHONE_NUMBER,
+            from_=MY_PHONE_NUMBER,
+            body=message
+        )
+    except TypeError:
+        # This will explode every time because the twilio library has a bug
+        # that doesn't let it properly parse the response from Twilio. Here we
+        # just assume that the text sent and all is happy.
+        pass
+    print("Fact sent: '{}'".format(message))
 
 
 def generate_acronym():
