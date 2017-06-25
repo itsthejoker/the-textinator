@@ -4,7 +4,7 @@ There are few things that are truly as fun on this earth as sending stupid thing
 
 Triggered by your standard everyday [Amazon Dash button](www.amazon.com/Dash-Buttons/b?ie=UTF8&node=10667898011), this script generates random acronyms and then runs them through [Acromine](http://www.nactem.ac.uk/software/acromine/), a service provided by the National Centre for Text Mining that contains every acronym in [MEDLINE](https://en.wikipedia.org/wiki/MEDLINE) databases (compiled by the United States Library of Medicine). Once a valid acronym is generated, the most common usage of that acronym is then formatted into a text message and sent to the target phone number via [Twilio](https://www.twilio.com).
 
-###Process:
+### Process:
 
 - Press Amazon Dash Button
 - MAC address of the button is pulled from the initial request to start the process
