@@ -37,7 +37,7 @@ def generate_acronym():
     # randomly generated acronyms, hell yeah
     length = random.choice([2, 3, 4])
     new_acronym = []
-    for _ in length:
+    for _ in range(length):
         new_acronym.append(random.choice(ascii_uppercase))
 
     return ''.join(new_acronym)
