@@ -11,7 +11,7 @@ from keys import DASH_BUTTON_MAC
 
 url = 'http://www.nactem.ac.uk/software/acromine/dictionary.py'
 
-# the_textinator = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+the_textinator = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 
 def send_text(acr_info):
@@ -26,11 +26,11 @@ def send_text(acr_info):
     )
 
     print(message)
-    # the_textinator.messages.create(
-    #     to=JAKES_PHONE_NUMBER,
-    #     from_=MY_PHONE_NUMBER,
-    #     body=message
-    # )
+    the_textinator.messages.create(
+        to=JAKES_PHONE_NUMBER,
+        from_=MY_PHONE_NUMBER,
+        body=message
+    )
 
 
 def generate_acronym():
