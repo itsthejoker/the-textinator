@@ -19,9 +19,9 @@ def send_text(acr_info):
         'ACRONYM FACTS: Did you know that '
         '"{}" most commonly means "{}" '
         'and has since {}?'.format(
-            acr_info["acronym"],
-            acr_info["definition"],
-            acr_info["since"]
+            str(acr_info["acronym"]),
+            str(acr_info["definition"]),
+            str(acr_info["since"])
         )
     )
 
