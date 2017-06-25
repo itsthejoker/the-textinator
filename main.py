@@ -16,9 +16,13 @@ url = 'http://www.nactem.ac.uk/software/acromine/dictionary.py'
 
 def send_text(acr_info):
     message = (
-        f'ACRONYM FACTS: Did you know that '
-        f'"{acr_info["acronym"]}" most commonly means "{acr_info["definition"]}" '
-        f'and has since {acr_info["since"]}?'
+        'ACRONYM FACTS: Did you know that '
+        '"{}" most commonly means "{}" '
+        'and has since {}?'.format(
+            acr_info["acronym"],
+            acr_info["definition"],
+            acr_info["since"]
+        )
     )
 
     print(message)
