@@ -29,4 +29,7 @@ _You know this is dumb, right?_ Yeah, totally. That's the point.
 
 ## Other
 
+The system is currently running on a Raspberry Pi 3 in my office, and the Dash button is for buying Play-Doh. This is 100% worth the cost.
+
+
 I'll update this if / when he figures it out.
