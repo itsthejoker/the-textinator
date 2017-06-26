@@ -7,10 +7,13 @@ from scapy.all import sniff, ARP
 from twilio.rest import Client
 
 from keys import DASH_BUTTON_MAC
-from keys import JAKES_PHONE_NUMBER
+from keys import JAKE
 from keys import MY_PHONE_NUMBER
+from keys import JAMES
 from keys import TWILIO_ACCOUNT_SID
 from keys import TWILIO_AUTH_TOKEN
+
+all_phones = [JAKE, JAMES]
 
 url = 'http://www.nactem.ac.uk/software/acromine/dictionary.py'
 
@@ -28,17 +31,18 @@ def send_text(acr_info):
         )
     )
 
-    try:
-        the_textinator.messages.create(
-            to=JAKES_PHONE_NUMBER,
-            from_=MY_PHONE_NUMBER,
-            body=message
-        )
-    except TypeError:
-        # This will explode every time because the twilio library has a bug
-        # that doesn't let it properly parse the response from Twilio. Here we
-        # just assume that the text sent and all is happy.
-        pass
+    for phone in all_phones:
+        try:
+            the_textinator.messages.create(
+                to=phone,
+                from_=MY_PHONE_NUMBER,
+                body=message
+            )
+        except TypeError:
+            # This will explode every time because the twilio library has a bug
+            # that doesn't let it properly parse the response from Twilio. Here we
+            # just assume that the text sent and all is happy.
+            pass
     print("Fact sent: '{}'".format(message))
 
 
