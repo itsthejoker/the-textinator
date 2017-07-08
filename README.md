@@ -32,4 +32,4 @@ _You know this is dumb, right?_ Yeah, totally. That's the point.
 The system is currently running on a Raspberry Pi 3 in my office, and the Dash button is for buying Play-Doh. This is 100% worth the cost.
 
 
-I'll update this if / when he figures it out.
+Edit: It's his anniversary today, and I decided to bring it to a close by texting him something in the same format as the automated texts. It went over very well, and all is good. Another project complete :)
