@@ -1,35 +1,45 @@
 import random
+import threading
 import time
 from string import ascii_uppercase
 
 import requests
+from keys import (
+    DASH_BUTTON_MAC,
+    MICHELLE,
+    ME,
+    MY_PHONE_NUMBER,
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN
+)
+from leds import larson, rainbow, blink_message
 from scapy.all import sniff, ARP
 from twilio.rest import Client
 
-from keys import DASH_BUTTON_MAC
-from keys import JAKE
-from keys import MY_PHONE_NUMBER
-from keys import JAMES
-from keys import TWILIO_ACCOUNT_SID
-from keys import TWILIO_AUTH_TOKEN
-
-all_phones = [JAKE, JAMES]
+all_phones = [ME, MICHELLE]
 
 url = 'http://www.nactem.ac.uk/software/acromine/dictionary.py'
 
 the_textinator = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
+stop_thread = False
+
 
 def send_text(acr_info):
     message = (
-        'ACRONYM FACTS: Did you know that '
-        '"{}" most commonly means "{}" '
-        'and has since {}?'.format(
+        'ACRONYM FACTS: Did you know that "{}" in medicine most commonly means'
+        ' "{}" and was first seen in {}?'.format(
             str(acr_info["acronym"]),
             str(acr_info["definition"]),
             str(acr_info["since"])
         )
     )
+
+    stop_thread = False
+    thread1 = threading.Thread(target=rainbow, args=(lambda: stop_thread,))
+    thread1.start()
+
+    message_failure = False
 
     for phone in all_phones:
         try:
@@ -39,11 +49,18 @@ def send_text(acr_info):
                 body=message
             )
         except TypeError:
-            # This will explode every time because the twilio library has a bug
-            # that doesn't let it properly parse the response from Twilio. Here we
-            # just assume that the text sent and all is happy.
+            message_failure = True
             pass
+
     print("Fact sent: '{}'".format(message))
+
+    stop_thread = True
+    thread1.join()  # stop the animation
+
+    if message_failure:
+        blink_message(success=False)
+    else:
+        blink_message(success=True)
 
 
 def generate_acronym():
@@ -71,25 +88,31 @@ def parse_acr_definitions(acr):
     return result
 
 
-def process_acronym():
-    # helper function to tie the process together
+def get_acronym_information():
+    stop_thread = False
+    thread1 = threading.Thread(target=larson, args=(lambda: stop_thread,))
+    thread1.start()
+
     while True:
         acr = generate_acronym()
         result = get_meaning(acr)
-        # keep going until we generate a valid acronym
         if result:
-            parsed_result = parse_acr_definitions(result)
-            send_text(parsed_result)
-            return
+            stop_thread = True
+            thread1.join()  # stop the animation
+            return result
         else:
             time.sleep(1)
 
 
 def arp_capture(pkt):
     if pkt[ARP].hwsrc == DASH_BUTTON_MAC:
-        process_acronym()
+        result = get_acronym_information()
+        parsed_result = parse_acr_definitions(result)
+        send_text(parsed_result)
+
 
 if __name__ == '__main__':
+    blink_message(success=True)
     # monitor the network until we see the Dash button get pressed, then fire
     # arp_capture, which triggers the acronym generation and text
     print(sniff(prn=arp_capture, filter="arp", store=0, count=0))

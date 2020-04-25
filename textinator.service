@@ -1,0 +1,11 @@
+[Unit]
+Description=THE TEXTINATOR
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/sh /home/pi/the-textinator/run_textinator.sh .
+
+[Install]
+WantedBy=multi-user.target
