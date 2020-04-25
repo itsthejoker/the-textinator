@@ -6,17 +6,21 @@ from string import ascii_uppercase
 import requests
 from keys import (
     DASH_BUTTON_MAC,
-    MICHELLE,
-    ME,
     MY_PHONE_NUMBER,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN
+)
+from keys import (
+    MICHELLE,
+    ME,
+    ZACK,
+    LILY
 )
 from leds import larson, rainbow, blink_message
 from scapy.all import sniff, ARP
 from twilio.rest import Client
 
-all_phones = [ME, MICHELLE]
+all_phones = [ME, MICHELLE, ZACK, LILY]
 
 url = 'http://www.nactem.ac.uk/software/acromine/dictionary.py'
 
@@ -48,8 +52,9 @@ def send_text(acr_info):
                 from_=MY_PHONE_NUMBER,
                 body=message
             )
-        except TypeError:
+        except Exception as e:
             message_failure = True
+            print("ERROR: {e}")
             pass
 
     print("Fact sent: '{}'".format(message))
